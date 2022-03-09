@@ -9,7 +9,8 @@ import {DragAndDropEventArgs, TreeViewComponent} from '@syncfusion/ej2-react-nav
 import {DataManager, WebApiAdaptor} from '@syncfusion/ej2-data';
 class App extends React.Component <{},{}>{
     public scheduleObj:ScheduleComponent;
-    private localData= [
+    private localData= {
+    dataSource: [
       {
         Id:1,
         End: new Date(2022, 2, 8, 6, 30),
@@ -24,15 +25,15 @@ class App extends React.Component <{},{}>{
         Summary:"Peter",
         Location:"Tower center",
         IsReadonly: true,
-      },
-      {
-        fields:{
-          subject : {name :"Summary", default:"No title"},
-          startTime:{name: "Start"},
-          endTime :{name :"End"},
-        }
       }
-  ];
+    ],
+    fields:{
+      subject : {name :"Summary", default:"No title"},
+      startTime:{name: "Start"},
+      endTime :{name :"End"},
+
+    }
+  };
   private onDragStart (args: DragEventArgs):void{
     // (args.scroll as ScrollOptions).enable = false;
     // (args.scroll as ScrollOptions).scrollBy = 500;
@@ -70,40 +71,36 @@ class App extends React.Component <{},{}>{
     this.scheduleObj.addEvent(eventData);
   }
 
-  private eventTemplate(props:{[key:string]:Object}):JSX.Element{
-    return(<div className='template-wrap'>{props.Subject}</div>);
-  }
-
+  public getToday(){
+    const today = new Date();
+    console.log("==========>",today)
+    return today;
+    }
   public render() {
     return (
       <div>
-        <div className='scheduler-title-container'>Doctor Appointments</div>
+        <div className='scheduler-title-container'> Schedule Personal </div>
         <div className='scheduler-component'>
           <ScheduleComponent  
           ref={Schedule=>this.scheduleObj = Schedule as ScheduleComponent}
-           height="550px" currentView='Week' selectedDate={new Date(2022, 2, 8)}
+          width="1500px" height="600px" currentView='Week' selectedDate={this.getToday()}
           // eventSettings={{dataSource:this.remoteData}}
-          eventSettings={{dataSource:this.localData, template: this.eventTemplate.bind(this)}} allowDragAndDrop={true} allowResizing = {true}
+          eventSettings={this.localData} allowDragAndDrop={true} allowResizing = {true}
           dragStart= {this.onDragStart} resizeStart= {this.onResizeStart}
           >
             <ViewsDirective>
-                <ViewDirective option='Day' interval={10} startHour='03:00' endHour='15:00'  displayName="Day"></ViewDirective>
-                <ViewDirective option='Week' interval={2} isSelected={true} ></ViewDirective>
+                <ViewDirective option='Day' interval={1}  displayName="Day"></ViewDirective>
+                <ViewDirective option='Week' interval={1} isSelected={true} ></ViewDirective>
                 <ViewDirective option='Month'  showWeekNumber={true} ></ViewDirective>   
-                <ViewDirective option='TimelineDay' ></ViewDirective>
+                {/* <ViewDirective option='TimelineDay' ></ViewDirective>
                 <ViewDirective option='TimelineMonth'></ViewDirective>
-                <ViewDirective option='TimelineYear'></ViewDirective>
+                <ViewDirective option='TimelineYear'></ViewDirective> */}
 
             </ViewsDirective>
             <Inject services={[Day, Week, Month, WorkWeek, Agenda, TimelineViews, TimelineMonth, TimelineYear, DragAndDrop, Resize]} />
          </ScheduleComponent>
           </div>
-            <div className='treeview-title-container'>Patient List</div>
-            <div className='treeview-component'>
-                <TreeViewComponent className='treeview-component-item' fields={this.field} allowDragAndDrop={true} 
-                nodeDragStop={this.onTreeDragStop.bind(this)}
-                />
-            </div>
+
       </div>
     );
   }

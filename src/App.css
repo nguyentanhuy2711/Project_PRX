@@ -38,7 +38,7 @@
 }
 
 .scheduler-title-container{
-  width:80%;
+  width:100%;
   display: inline-block;
   text-align: center;
   font-weight: 500;
@@ -48,9 +48,9 @@
 
 .scheduler-component{
   float: left;
-  width: 80%;
+  width: 100%;
 }
-.treeview-title-container{
+/* .treeview-title-container{
   display: inline-block;
   width: 20%;
   padding-left:0px;
@@ -59,8 +59,8 @@
   float: right;
   font-size: 25px;
   color:aqua;
-}
-.treeview-component{
+} */
+/* .treeview-component{
   float: right;
   width: 20%;
 
@@ -78,7 +78,4 @@
   padding-right: 5px;
   padding-top: 7px;
   padding-bottom: 10px;
-}
-.e-schedule .e-appointment-details{
-  padding: 0 !important;
-}
+} */
