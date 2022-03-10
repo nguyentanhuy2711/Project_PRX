@@ -1,107 +1,50 @@
 
 import './App.css';
 import React from 'react';
-import { ScheduleComponent, Inject, Day, Week, Month, WorkWeek, Agenda
-      ,ViewDirective, ViewsDirective, TimelineViews, TimelineMonth,TimelineYear 
-      , Resize, DragAndDrop, DragEventArgs, ResizeEventArgs, CellClickEventArgs, Schedule} from '@syncfusion/ej2-react-schedule';
-import {ScrollOptions, NavigateOptions} from '@syncfusion/ej2-react-schedule';
-import {DragAndDropEventArgs, TreeViewComponent} from '@syncfusion/ej2-react-navigations';
-import {DataManager, WebApiAdaptor} from '@syncfusion/ej2-data';
+import ScheduleFake from './components/Schedule/Schedule';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Login from "./components/Login/Login";
+import SignUp from './components/SignUp/SignUp';
 class App extends React.Component <{},{}>{
-    public scheduleObj:ScheduleComponent;
-    private localData= {
-    dataSource: [
-      {
-        Id:1,
-        End: new Date(2022, 2, 8, 6, 30),
-        Start: new Date(2022, 2, 8, 4, 0),
-        Summary:  "John",
-        Location:"Yoga center",
-      },
-      {
-        Id:2,
-        End: new Date(2022, 2, 17, 6, 30),
-        Start: new Date(2022, 2, 17, 6, 30),
-        Summary:"Peter",
-        Location:"Tower center",
-        IsReadonly: true,
-      }
-    ],
-    fields:{
-      subject : {name :"Summary", default:"No title"},
-      startTime:{name: "Start"},
-      endTime :{name :"End"},
 
-    }
-  };
-  private onDragStart (args: DragEventArgs):void{
-    // (args.scroll as ScrollOptions).enable = false;
-    // (args.scroll as ScrollOptions).scrollBy = 500;
-    // args.interval = 1;
-    // (args.navigation as NavigateOptions).enable = true;
-    args.excludeSelectors = "e-all-day-cells, e-work-cells"
-  }
-  private onResizeStart (args: DragEventArgs): void{
-    // (args.scroll as ScrollOptions).enable = false;
-    // (args.scroll as ScrollOptions).scrollBy = 500;
-    args.interval = 1;
-  }
-  // private remoteData = new DataManager({
-  //   url:'https://js.syncfusion.com/demos/ejservices/api/Schedule/LoadData',
-  //   adaptor: new WebApiAdaptor,
-  //   crossDomain: true,
-  // })
-  private treeViewData:{[key:string]:Object}[] = [
-    {Id:1, Name:"Huy"},
-    {Id:2,Name :"Nguyen"},
-    {Id:3,Name:"Tuan"},
-    {Id:4,Name: "John"},
-    {Id:5,Name:"Peter"}
-  ];
-  public field:Object = {dataSource:this.treeViewData,id:'Id',text:'Name'}
-  public onTreeDragStop(args:DragAndDropEventArgs):void{
-    let cellData:CellClickEventArgs = this.scheduleObj.getCellDetails(args.target);
-    let eventData:{[key:string]:Object}={
-      Summary:args.draggedNodeData.text,
-      Start: cellData.startTime,
-      End: cellData.endTime,
-      IsAllDay:cellData.isAllDay,
-    }
-    this.scheduleObj.openEditor(eventData,"Add", true);
-    this.scheduleObj.addEvent(eventData);
-  }
+  private handleCOntroller(){
 
-  public getToday(){
-    const today = new Date();
-    console.log("==========>",today)
-    return today;
-    }
+  }
   public render() {
     return (
-      <div>
-        <div className='scheduler-title-container'> Schedule Personal </div>
-        <div className='scheduler-component'>
-          <ScheduleComponent  
-          ref={Schedule=>this.scheduleObj = Schedule as ScheduleComponent}
-          width="1500px" height="600px" currentView='Week' selectedDate={this.getToday()}
-          // eventSettings={{dataSource:this.remoteData}}
-          eventSettings={this.localData} allowDragAndDrop={true} allowResizing = {true}
-          dragStart= {this.onDragStart} resizeStart= {this.onResizeStart}
-          >
-            <ViewsDirective>
-                <ViewDirective option='Day' interval={1}  displayName="Day"></ViewDirective>
-                <ViewDirective option='Week' interval={1} isSelected={true} ></ViewDirective>
-                <ViewDirective option='Month'  showWeekNumber={true} ></ViewDirective>   
-                {/* <ViewDirective option='TimelineDay' ></ViewDirective>
-                <ViewDirective option='TimelineMonth'></ViewDirective>
-                <ViewDirective option='TimelineYear'></ViewDirective> */}
-
-            </ViewsDirective>
-            <Inject services={[Day, Week, Month, WorkWeek, Agenda, TimelineViews, TimelineMonth, TimelineYear, DragAndDrop, Resize]} />
-         </ScheduleComponent>
+      <Router>
+        <div className="App">
+          <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+            <div className="container" style={{boxShadow:"inherit"}}>
+              <Link className="navbar-brand" to={"/sign-in"} style={{fontFamily:"fantasy", color:"red"}}>Schedule Fake</Link>
+              <div  className="collapse navbar-collapse" id="navbarTogglerDemo02"  style={{width:"100%"}}>
+                <ul className="navbar-nav ml-auto" style={{marginLeft:"950px"}}>
+                  <li className="nav-item">
+                    <Link className="nav-link" to={"/scheduleFake"} style={{fontFamily:"fantasy"}}>Main</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to={"/sign-in"} style={{fontFamily:"fantasy"}}>Login</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to={"/sign-up"} style={{fontFamily:"fantasy"}}>Sign up</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <div className="auth-wrapper" style={{backgroundColor:"lightblue"}}>
+            <div className="auth-inner" style={{boxShadow:"10px 10px 5px 5px black"}}>
+              <Switch>
+                <Route exact path='/' component={Login} />
+                <Route path="/scheduleFake"  component={ScheduleFake}/>
+                <Route path="/sign-in" component={Login} />
+                <Route path="/sign-up" component={SignUp} />
+              </Switch>
+            </div>
           </div>
-
-      </div>
+        </div>
+      </Router>
     );
   }
 }

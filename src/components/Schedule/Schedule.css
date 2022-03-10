@@ -1,0 +1,18 @@
+
+.container{
+    margin-left: 0px;
+}
+.scheduler-title-container{
+    width:100%;
+    display: inline-block;
+    text-align: center;
+    font-weight: 500;
+    font-size: 25px;
+    color: aqua;
+  }
+  
+  .scheduler-component{
+    float: left;
+    width: 100%;
+  }
+  

@@ -1,0 +1,15 @@
+
+.btn{
+    margin-top: 20px;
+
+    width: 100%;
+}
+.form-group{
+    margin: 10px;
+
+}
+.form-control{
+    box-sizing: inherit;
+    border-radius: 10px;
+    border: 2px inset black;
+}
